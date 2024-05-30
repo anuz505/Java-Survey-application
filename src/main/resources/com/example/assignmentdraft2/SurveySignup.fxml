@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="707.0" prefWidth="686.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.assignmentdraft2.HelloController">
+    <children>
+        <Label layoutX="252.0" layoutY="38.0" text="Survey Creator Sign up" textAlignment="CENTER">
+            <font>
+                <Font name="Calibri Bold" size="32.0" />
+            </font>
+        </Label>
+        <TextField layoutX="56.0" layoutY="152.0" promptText="your email" />
+        <Label layoutX="56.0" layoutY="129.0" text="Email" />
+        <PasswordField layoutX="56.0" layoutY="226.0" promptText="your Password" />
+        <Label layoutX="57.0" layoutY="200.0" text="Password" />
+        <ChoiceBox fx:id="nation" layoutX="274.0" layoutY="152.0" prefWidth="150.0" />
+        <Label layoutX="279.0" layoutY="132.0" text="Country" />
+        <Label layoutX="278.0" layoutY="200.0" text="Gender" />
+        <RadioButton fx:id="radioMale" layoutX="277.0" layoutY="232.0" mnemonicParsing="false" text="Male">
+            <font>
+                <Font name="Calibri" size="10.0" />
+            </font>
+            <toggleGroup>
+                <ToggleGroup fx:id="gender_group" />
+            </toggleGroup>
+        </RadioButton>
+        <RadioButton fx:id="radioFemale" layoutX="276.0" layoutY="258.0" mnemonicParsing="false" text="Female" toggleGroup="$gender_group">
+            <font>
+                <Font name="Calibri" size="10.0" />
+            </font>
+        </RadioButton>
+        <Button layoutX="195.0" layoutY="318.0" mnemonicParsing="false" text="Sign up" />
+        <Label fx:id="userINFO" />
+    </children>
+
+
+</AnchorPane>

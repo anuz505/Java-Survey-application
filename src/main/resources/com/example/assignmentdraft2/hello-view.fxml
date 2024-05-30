@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:controller="com.example.assignmentdraft2.HelloController"
+            maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="userINFO" layoutX="205.0" layoutY="28.0" text="Welcome to Nepal Transport Survey" />
+      <Button layoutX="195.0" layoutY="230.0" mnemonicParsing="false" text="Enter the survey by entering the code" />
+      <Button layoutX="250.0" layoutY="269.0" mnemonicParsing="false" onAction="#openadminsignin" text="Sign in as admin" />
+   </children>
+</AnchorPane>
