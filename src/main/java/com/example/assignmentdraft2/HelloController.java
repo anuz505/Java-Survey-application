@@ -33,6 +33,9 @@ public class HelloController {
     private Label userINFO;
 
     @FXML
+    private Label userINFO1;
+
+    @FXML
             private Label LoginINFO;
 
     //user
@@ -195,8 +198,27 @@ public class HelloController {
 
    }
 
+    @FXML
+    public void backtologin() {
+        try {
+            if (userINFO == null) {
+                System.err.println("userINFO is null. Ensure it's properly initialized.");
+                return;
+            }
+            if (userINFO.getScene() == null) {
+                System.err.println("userINFO does not have a scene. Check FXML loading.");
+                return;
+            }
+            loadStage("/com/example/assignmentdraft2/AdminLogin.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (userINFO1 != null) {
+                userINFO1.setText(e.getMessage());
+            }
+        }
+    }
 
-    private static final String DIRECTORY_PATH = "C:\\Users\\anuz\\Documents\\JAVA Practice subit\\AssignmentDraft2\\src\\main\\resources\\SurveyData\\"; // Change this to your desired directory
+    private static final String DIRECTORY_PATH = "C:\\Users\\anuz\\Documents\\JAVA Practice subit\\AssignmentDraft2\\src\\main\\resources\\com\\example\\assignmentdraft2\\Surveryquestions\\"; // Change this to your desired directory
     private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyz";
     private static final int WORD_LENGTH = 6;
     public static String generateRandomWord() {
@@ -218,7 +240,7 @@ public class HelloController {
             directory.mkdirs();
         }
 
-        String fileName = DIRECTORY_PATH + "Survey_" + fileCounter + ".csv";
+        String fileName = DIRECTORY_PATH +fileCounter+"Surveyquestion" +"Survey_" + fileCounter + ".csv";
         try (FileWriter fileWriter = new FileWriter(fileName)) {
 
             System.out.println("CSV file created: " + fileName);
@@ -227,6 +249,23 @@ public class HelloController {
         }
         fileCounter++;
     }
+    public static void createCSVFile1() {
+        // Ensure the directory exists
+        File directory = new File(DIRECTORY_PATH);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        String fileName = DIRECTORY_PATH +fileCounter+"Surveyquestion" +"Survey_" + fileCounter + ".csv";
+        try (FileWriter fileWriter = new FileWriter(fileName)) {
+
+            System.out.println("CSV file created: " + fileName);
+        } catch (IOException e) {
+            System.err.println("Error creating CSV file: " + e.getMessage());
+        }
+        fileCounter++;
+    }
+
 
     //adding new element
     private int tQuestionCount = 0;
@@ -323,6 +362,7 @@ public class HelloController {
         dynamicBox.getChildren().addAll(newTextField, addTquestionBtn, polarQuestionsBtn, mcqBtn);
     }
 
+    //layout
     private void layoutTextField(TextField textField) {
         Node lastNode = dynamicBox.getChildren().get(dynamicBox.getChildren().size() - 1);
         double layoutY = lastNode.getLayoutY();
@@ -342,6 +382,7 @@ public class HelloController {
         belowNode.setLayoutY(layoutY + aboveNode.getBoundsInParent().getHeight() + 20);
     }
 
+    //saving to csv
     @FXML
     public void submitquestions() {
         String baseDir = "C:/Users/anuz/Documents/JAVA Practice subit/AssignmentDraft2/src/main/resources/com/example/assignmentdraft2/Surveryquestions";
@@ -392,7 +433,9 @@ public class HelloController {
     @FXML
     public void savePolarQuestions(String dirPath) {
         saveQuestionsToCSV("polar", dirPath + "/polar.csv");
+        createCSVFile1();
     }
+
 
     private void saveQuestionsToCSV(String questionPrefix, String fileName) {
         List<String> questions = new ArrayList<>();
@@ -403,6 +446,7 @@ public class HelloController {
         }
 
         try (FileWriter writer = new FileWriter(fileName)) {
+
             for (String question : questions) {
                 writer.write(question + "\n");
             }
@@ -410,6 +454,7 @@ public class HelloController {
             e.printStackTrace();
         }
     }
+
 
     @FXML
     public void loadStage(String sceneName) throws IOException {

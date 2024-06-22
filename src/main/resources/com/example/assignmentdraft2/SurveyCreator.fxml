@@ -9,5 +9,6 @@
       <Button layoutX="59.0" layoutY="211.0" mnemonicParsing="false" text="View Survey" />
       <Button layoutX="59.0" layoutY="169.0" mnemonicParsing="false" onAction="#CreateSurvey" text="Create a new survey" />
       <Label fx:id="userINFO" layoutX="244.0" layoutY="314.0" />
+      <Button layoutX="451.0" layoutY="280.0" mnemonicParsing="false" onAction="#backtologin" text="Home" />
    </children>
 </AnchorPane>

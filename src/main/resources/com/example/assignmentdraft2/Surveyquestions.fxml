@@ -14,6 +14,8 @@
       <Button layoutX="188.0" layoutY="110.0" mnemonicParsing="false" text="Add polar questions" />
       <Button layoutX="328.0" layoutY="110.0" mnemonicParsing="false" onAction="#addMCQ" text="MCQ questions" />
          <Label fx:id="SubmitL" layoutX="453.0" layoutY="53.0" />
+         <Button layoutX="447.0" layoutY="110.0" mnemonicParsing="false" onAction="#backtologin" text="Home" />
+         <Label fx:id="userINFO" layoutX="426.0" layoutY="220.0" />
    </children>
 </AnchorPane>
 </ScrollPane>

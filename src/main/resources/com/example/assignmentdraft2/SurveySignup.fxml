@@ -33,6 +33,7 @@
         </RadioButton>
         <Button layoutX="195.0" layoutY="318.0" mnemonicParsing="false" onAction="#SCsignupBTN" text="Sign up" />
         <Label fx:id="userINFO" />
+      <Button layoutX="589.0" layoutY="318.0" mnemonicParsing="false" onAction="#backtologin" text="Home" />
     </children>
 
 

@@ -8,6 +8,6 @@
       <Label layoutX="241.0" layoutY="98.0" text="Enter the Survey Code" />
       <TextField layoutX="226.0" layoutY="140.0" />
       <Button layoutX="275.0" layoutY="188.0" mnemonicParsing="false" text="Submit" />
-      <Button layoutX="471.0" layoutY="302.0" mnemonicParsing="false" text="Create a survey" />
+      <Button layoutX="471.0" layoutY="302.0" mnemonicParsing="false" onAction="#backtologin" text="Create a survey" />
    </children>
 </AnchorPane>
