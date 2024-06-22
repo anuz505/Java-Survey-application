@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.assignmentdraft2.HelloController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<ScrollPane fx:id="scrollPane" prefHeight="414.0" prefWidth="516.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.assignmentdraft2.HelloController">
+<AnchorPane fx:id="dynamicBox" prefHeight="421.0" prefWidth="906.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="45.0" layoutY="36.0" text="Survey Questions" />
+      <Label layoutX="45.0" layoutY="77.0" text="1" />
+      <Label layoutX="63.0" layoutY="77.0" text="Select the type of questions you want to create" />
+      <Button layoutX="852.0" layoutY="14.0" mnemonicParsing="false" text="Submit" onAction="#submitquestions"/>
+      <Button layoutX="57.0" layoutY="110.0" mnemonicParsing="false" onAction="#addTquestion" text="Add Text questions" />
+      <Button layoutX="188.0" layoutY="110.0" mnemonicParsing="false" text="Add polar questions" />
+      <Button layoutX="328.0" layoutY="110.0" mnemonicParsing="false" onAction="#addMCQ" text="MCQ questions" />
+   </children>
 </AnchorPane>
+</ScrollPane>

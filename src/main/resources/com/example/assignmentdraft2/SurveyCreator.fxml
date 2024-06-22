@@ -6,9 +6,8 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.assignmentdraft2.HelloController">
    <children>
       <Label layoutX="272.0" layoutY="33.0" text="Survey Creator" />
-      <TextField layoutX="59.0" layoutY="109.0" prefHeight="25.0" prefWidth="384.0" />
-      <Label layoutX="59.0" layoutY="84.0" text="Add Questions" />
-      <Button layoutX="59.0" layoutY="175.0" mnemonicParsing="false" text="add more" />
-      <Button layoutX="299.0" layoutY="300.0" mnemonicParsing="false" text="View Survey" />
+      <Button layoutX="59.0" layoutY="211.0" mnemonicParsing="false" text="View Survey" />
+      <Button layoutX="59.0" layoutY="169.0" mnemonicParsing="false" onAction="#CreateSurvey" text="Create a new survey" />
+      <Label fx:id="userINFO" layoutX="244.0" layoutY="314.0" />
    </children>
 </AnchorPane>
