@@ -12,9 +12,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 public class HelloController {
 
@@ -59,7 +64,8 @@ public class HelloController {
 
     String pathtoCSV = "C:/Users/anuz/Documents/JAVA Practice subit/AssignmentDraft2/src/main/resources/AdminData.csv";
 
-
+    @FXML
+    private Label SubmitL;
 
     public void openadminsignin() throws IOException {
         loadStage("/com/example/assignmentdraft2/AdminLogin.fxml");
@@ -337,26 +343,55 @@ public class HelloController {
     }
 
     @FXML
-    public void saveTQuestions() {
-        saveQuestionsToCSV("tquestion", "C:/Users/anuz/Documents/JAVA Practice subit/AssignmentDraft2/src/main/resources/com/example/assignmentdraft2/Surveryquestions/tquestions.csv");
+    public void submitquestions() {
+        String baseDir = "C:/Users/anuz/Documents/JAVA Practice subit/AssignmentDraft2/src/main/resources/com/example/assignmentdraft2/Surveryquestions";
+        File newDir = createNewDirectory(baseDir);
+
+        saveTQuestions(newDir.getAbsolutePath());
+        savePolarQuestions(newDir.getAbsolutePath());
+        saveMCQs(newDir.getAbsolutePath());
+
+        SubmitL.setText("Saved");
+    }
+
+    private File createNewDirectory(String baseDir) {
+        File baseDirectory = new File(baseDir);
+        if (!baseDirectory.exists()) {
+            baseDirectory.mkdirs();
+        }
+
+        int nextNumber = 1;
+        try (Stream<Path> paths = Files.list(Paths.get(baseDir))) {
+            nextNumber = paths.filter(Files::isDirectory)
+                    .map(path -> path.getFileName().toString())
+                    .filter(name -> name.matches("\\d+Surveyquestion"))
+                    .map(name -> Integer.parseInt(name.replace("Surveyquestion", "")))
+                    .max(Comparator.naturalOrder())
+                    .orElse(0) + 1;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        File newDir = new File(baseDir, nextNumber + "Surveyquestion");
+        if (!newDir.exists()) {
+            newDir.mkdirs();
+        }
+        return newDir;
     }
 
     @FXML
-    public void saveMCQs() {
-        saveQuestionsToCSV("mcq", "C:/Users/anuz/Documents/JAVA Practice subit/AssignmentDraft2/src/main/resources/com/example/assignmentdraft2/Surveryquestions/mcq.csv");
+    public void saveTQuestions(String dirPath) {
+        saveQuestionsToCSV("tquestion", dirPath + "/tquestions.csv");
     }
 
     @FXML
-    public void savePolarQuestions() {
-        saveQuestionsToCSV("polar", "C:/Users/anuz/Documents/JAVA Practice subit/AssignmentDraft2/src/main/resources/com/example/assignmentdraft2/Surveryquestions/polar.csv");
+    public void saveMCQs(String dirPath) {
+        saveQuestionsToCSV("mcq", dirPath + "/mcq.csv");
     }
 
     @FXML
-    public void submitquestions() throws IOException {
-        saveTQuestions();
-        savePolarQuestions();
-        saveMCQs();
-        loadStage("/com/example/assignmentdraft2/hello-view.fxml");
+    public void savePolarQuestions(String dirPath) {
+        saveQuestionsToCSV("polar", dirPath + "/polar.csv");
     }
 
     private void saveQuestionsToCSV(String questionPrefix, String fileName) {
