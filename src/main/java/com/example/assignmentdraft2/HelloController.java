@@ -183,7 +183,7 @@ public class HelloController {
     //surveycreator functions
    public void CreateSurvey() throws IOException {
       userINFO.setText("Survey Created click on view survey");
-       createCSVFile();
+
        FileWriter fileWriter1 = new FileWriter("C:\\Users\\anuz\\Documents\\JAVA Practice subit\\AssignmentDraft2\\src\\main\\resources\\surveyCode.csv",true);
        CSVWriter csvWriter1 = new CSVWriter(fileWriter1);
        String data1 = generateRandomWord();
@@ -233,38 +233,24 @@ public class HelloController {
         return word.toString();
     }
     public static  int fileCounter = 0;
-    public static void createCSVFile() {
+    public static void createCSVFile(String directoryPath) {
         // Ensure the directory exists
-        File directory = new File(DIRECTORY_PATH);
+        File directory = new File(directoryPath);
         if (!directory.exists()) {
             directory.mkdirs();
         }
 
-        String fileName = DIRECTORY_PATH +fileCounter+"Surveyquestion" +"Survey_" + fileCounter + ".csv";
+        String fileName = directoryPath + "/" + fileCounter + "Survey_" + fileCounter + ".csv";
         try (FileWriter fileWriter = new FileWriter(fileName)) {
-
             System.out.println("CSV file created: " + fileName);
+            fileWriter.write(generateRandomWord());
         } catch (IOException e) {
             System.err.println("Error creating CSV file: " + e.getMessage());
         }
         fileCounter++;
     }
-    public static void createCSVFile1() {
-        // Ensure the directory exists
-        File directory = new File(DIRECTORY_PATH);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
 
-        String fileName = DIRECTORY_PATH +fileCounter+"Surveyquestion" +"Survey_" + fileCounter + ".csv";
-        try (FileWriter fileWriter = new FileWriter(fileName)) {
 
-            System.out.println("CSV file created: " + fileName);
-        } catch (IOException e) {
-            System.err.println("Error creating CSV file: " + e.getMessage());
-        }
-        fileCounter++;
-    }
 
 
     //adding new element
@@ -385,15 +371,18 @@ public class HelloController {
     //saving to csv
     @FXML
     public void submitquestions() {
-        String baseDir = "C:/Users/anuz/Documents/JAVA Practice subit/AssignmentDraft2/src/main/resources/com/example/assignmentdraft2/Surveryquestions";
+        String baseDir = "C:/Users/anuz/Documents/JAVA Practice subit/AssignmentDraft2/src/main/resources/com/example/assignmentdraft2/Surveyquestions";
         File newDir = createNewDirectory(baseDir);
 
         saveTQuestions(newDir.getAbsolutePath());
         savePolarQuestions(newDir.getAbsolutePath());
         saveMCQs(newDir.getAbsolutePath());
 
+        // Use the path of the newly created or existing 1Surveyquestions directory
+        createCSVFile(newDir.getAbsolutePath());
         SubmitL.setText("Saved");
     }
+
 
     private File createNewDirectory(String baseDir) {
         File baseDirectory = new File(baseDir);
@@ -433,9 +422,8 @@ public class HelloController {
     @FXML
     public void savePolarQuestions(String dirPath) {
         saveQuestionsToCSV("polar", dirPath + "/polar.csv");
-        createCSVFile1();
-    }
 
+    }
 
     private void saveQuestionsToCSV(String questionPrefix, String fileName) {
         List<String> questions = new ArrayList<>();
@@ -454,6 +442,7 @@ public class HelloController {
             e.printStackTrace();
         }
     }
+
 
 
     @FXML
