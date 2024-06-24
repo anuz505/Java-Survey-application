@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.0" xmlns:fx="http://javafx.com/fxml/1" spacing="10" fx:controller="com.example.assignmentdraft2.Userinteraction">
+    <VBox spacing="5">
+        <Label text= '  "How do you travel?" ' />
+             <RadioButton text='"Bus"' toggleGroup="$mcqToggleGroup" />
+            <RadioButton text='"Car"' toggleGroup="$mcqToggleGroup" />
+            <RadioButton text='"Helicopter"' toggleGroup="$mcqToggleGroup" />
+            <RadioButton text='"cycle"' toggleGroup="$mcqToggleGroup" />
+    </VBox>
+    <VBox spacing="5">
+        <Label text="are you fine with you travel whatever" />
+        <HBox spacing="10">
+                <RadioButton text="Yes" toggleGroup="$polarToggleGroup" />
+                <RadioButton text="No" toggleGroup="$polarToggleGroup" />
+        </HBox>
+    </VBox>
+    <VBox spacing="5">
+        <Label text="How was travel explain" />
+        <TextField fx:id="textq" />
+    </VBox>
+<VBox spacing="5">
+        <Button text="Submit" onAction="#handleSubmitButtonAction" />
+    </VBox></VBox>

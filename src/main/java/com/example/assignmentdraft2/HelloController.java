@@ -15,10 +15,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class HelloController {
@@ -218,7 +215,6 @@ public class HelloController {
         }
     }
 
-    private static final String DIRECTORY_PATH = "C:\\Users\\anuz\\Documents\\JAVA Practice subit\\AssignmentDraft2\\src\\main\\resources\\com\\example\\assignmentdraft2\\Surveryquestions\\"; // Change this to your desired directory
     private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyz";
     private static final int WORD_LENGTH = 6;
     public static String generateRandomWord() {
@@ -415,10 +411,7 @@ public class HelloController {
         saveQuestionsToCSV("tquestion", dirPath + "/tquestions.csv");
     }
 
-    @FXML
-    public void saveMCQs(String dirPath) {
-        saveQuestionsToCSV("mcq", dirPath + "/mcq.csv");
-    }
+
 
     @FXML
     public void savePolarQuestions(String dirPath) {
@@ -445,86 +438,90 @@ public class HelloController {
     }
 
   //Survey enter code wala section
+
     public TextField SCode;
     @FXML
     private Label validationLabel;
 
-    private  String baseDir = "C:/Users/anuz/Documents/JAVA Practice subit/AssignmentDraft2/src/main/resources/com/example/assignmentdraft2/Surveyquestions";
+    private final String baseDir = "C:/Users/anuz/Documents/JAVA Practice subit/AssignmentDraft2/src/main/resources/com/example/assignmentdraft2/Surveyquestions";
 
     @FXML
-    public void EnterSurvey() {
-        String inputCode = SCode.getText();
-        boolean isCodeVerified = false;
+  public void EnterSurvey() {
+      String inputCode = SCode.getText();
+      boolean isCodeVerified = false;
 
-        try (Stream<Path> paths = Files.list(Paths.get(baseDir))) {
-            for (Path path : (Iterable<Path>) paths::iterator) {
-                if (Files.isDirectory(path) && path.getFileName().toString().matches("\\d+Surveyquestion")) {
-                    File randomCSVFile = new File(path.toString(), "0Survey_0.csv"); // Assuming this is the random generated CSV file
+      try (Stream<Path> paths = Files.list(Paths.get(baseDir))) {
+          for (Path path : (Iterable<Path>) paths::iterator) {
+              if (Files.isDirectory(path) && path.getFileName().toString().matches("\\d+Surveyquestion")) {
+                  File randomCSVFile = new File(path.toString(), "0Survey_0.csv");
+                  System.out.println("Checking directory: " + path.toString());
+                  System.out.println("Random CSV file: " + randomCSVFile.getAbsolutePath());
 
-                    if (randomCSVFile.exists()) {
-                        try (BufferedReader br = new BufferedReader(new FileReader(randomCSVFile))) {
-                            String line;
-                            while ((line = br.readLine()) != null) {
-                                if (line.trim().equals(inputCode)) {
-                                    isCodeVerified = true;
-                                    validationLabel.setText("Code verified. Reading other CSV files...");
-                                    readOtherCSVFiles(path.toString());
-                                    generateFXMLFromCSV(path.toString());
-                                    break;
-                                }
-                            }
+                  if (randomCSVFile.exists()) {
+                      try (BufferedReader br = new BufferedReader(new FileReader(randomCSVFile))) {
+                          String line;
+                          while ((line = br.readLine()) != null) {
+                              if (line.trim().equals(inputCode)) {
+                                  isCodeVerified = true;
+                                  validationLabel.setText("Code verified. Reading other CSV files...");
+                                  System.out.println("Code verified: " + inputCode);
+                                  readOtherCSVFiles(path.toString());
+                                  generateFXMLFromCSV(path.toString());
 
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            validationLabel.setText("Error reading the random generated CSV file.");
-                        }
-                    }
-                }
-                if (isCodeVerified) {
-                    break;
-                }
-            }
+                                  System.out.println(path);
+                                  break;
+                              }
+                          }
+                      } catch (IOException e) {
+                          e.printStackTrace();
+                          validationLabel.setText("Error reading the random generated CSV file.");
+                      }
+                  } else {
+                      System.out.println("Random CSV file does not exist.");
+                  }
+              }
+              if (isCodeVerified) {
+                  break;
+              }
+          }
 
-            if (!isCodeVerified) {
-                validationLabel.setText("Invalid code. Please try again.");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            validationLabel.setText("Error accessing directories.");
-        }
-    }
+          if (!isCodeVerified) {
+              validationLabel.setText("Invalid code. Please try again.");
+          }
+      } catch (IOException e) {
+          e.printStackTrace();
+          validationLabel.setText("Error accessing directories.");
+      }
+  }
 
     private void readOtherCSVFiles(String directoryPath) {
-        // Read mcq.csv
-        readCSVFile(new File(directoryPath, "mcq.csv"));
-        // Read polar.csv
-        readCSVFile(new File(directoryPath, "polar.csv"));
-        // Read tquestions.csv
-        readCSVFile(new File(directoryPath, "tquestions.csv"));
+        readCSVFileIfExists(new File(directoryPath, "mcq.csv"));
+        readCSVFileIfExists(new File(directoryPath, "polar.csv"));
+        readCSVFileIfExists(new File(directoryPath, "tquestion.csv"));
     }
 
-    private void readCSVFile(File csvFile) {
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                // Process the line read from the CSV file
-                System.out.println("Read from " + csvFile.getName() + ": " + line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error reading " + csvFile.getName());
+    private void readCSVFileIfExists(File csvFile) {
+        if (csvFile.exists()) {
+            readCSV(csvFile);
+        } else {
+            System.out.println("File not found: " + csvFile.getAbsolutePath());
         }
     }
+
     public void Back() throws IOException {
         loadStage("/com/example/assignmentdraft2/hello-view.fxml");
     }
 
-
-    //Generating fxml
+    // Generating FXML
     private void generateFXMLFromCSV(String directoryPath) {
-        List<String> tQuestions = readCSV(new File(directoryPath, "tquestion.csv"));
         List<MCQQuestion> mcqQuestions = readMCQCSV(new File(directoryPath, "mcq.csv"));
         List<String> polarQuestions = readCSV(new File(directoryPath, "polar.csv"));
+        List<String> tQuestions = readCSV(new File(directoryPath, "tquestions.csv"));
+
+        // Debugging: Print the size of each question list
+        System.out.println("MCQ Questions: " + mcqQuestions.size());
+        System.out.println("Polar Questions: " + polarQuestions.size());
+        System.out.println("Text Questions: " + tQuestions.size());
 
         if (tQuestions.isEmpty() && mcqQuestions.isEmpty() && polarQuestions.isEmpty()) {
             System.out.println("No questions found in the CSV files.");
@@ -532,15 +529,22 @@ public class HelloController {
         }
 
         String fxmlContent = generateFXMLContent(tQuestions, mcqQuestions, polarQuestions);
-        writeFXMLFile(fxmlContent, new File(directoryPath, "SurveyQuestions.fxml"));
+        writeFXMLFile(fxmlContent, new File(directoryPath, "uSurveyQuestions.fxml"));
     }
 
     private List<String> readCSV(File csvFile) {
         List<String> questions = new ArrayList<>();
+        if (!csvFile.exists()) {
+            System.out.println("File not found: " + csvFile.getAbsolutePath());
+            return questions;
+        }
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             String line;
             while ((line = br.readLine()) != null) {
-                questions.add(line.trim());
+                line = line.trim();
+                if (!line.isEmpty()) {
+                    questions.add(line);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -551,6 +555,10 @@ public class HelloController {
 
     private List<MCQQuestion> readMCQCSV(File csvFile) {
         List<MCQQuestion> questions = new ArrayList<>();
+        if (!csvFile.exists()) {
+            System.out.println("File not found: " + csvFile.getAbsolutePath());
+            return questions;
+        }
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -571,57 +579,127 @@ public class HelloController {
         return questions;
     }
 
+    @FXML
+    public void saveMCQs(String dirPath) {
+        List<String[]> mcqQuestions = new ArrayList<>();
+        String question = null;
+        List<String> options = new ArrayList<>();
+
+        for (Node node : dynamicBox.getChildren()) {
+            if (node instanceof TextField && node.getId() != null) {
+                String id = node.getId();
+                if (id.startsWith("mcq-")) {
+                    if (question == null) {
+                        question = ((TextField) node).getText();
+                    } else {
+                        options.add(((TextField) node).getText());
+                    }
+
+                    // Check if we have gathered a complete MCQ (1 question + multiple options)
+                    if (!options.isEmpty() && node == dynamicBox.getChildren().get(dynamicBox.getChildren().size() - 1)) {
+                        String[] mcqData = new String[options.size() + 1];
+                        mcqData[0] = question;
+                        for (int i = 0; i < options.size(); i++) {
+                            mcqData[i + 1] = options.get(i);
+                        }
+                        mcqQuestions.add(mcqData);
+                        question = null;
+                        options.clear();
+                    }
+                } else if (!options.isEmpty()) {
+                    String[] mcqData = new String[options.size() + 1];
+                    mcqData[0] = question;
+                    for (int i = 0; i < options.size(); i++) {
+                        mcqData[i + 1] = options.get(i);
+                    }
+                    mcqQuestions.add(mcqData);
+                    question = null;
+                    options.clear();
+                }
+            }
+        }
+
+        try (CSVWriter writer = new CSVWriter(new FileWriter(dirPath + "/mcq.csv"))) {
+            for (String[] mcqData : mcqQuestions) {
+                writer.writeNext(mcqData);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private String generateFXMLContent(List<String> tQuestions, List<MCQQuestion> mcqQuestions, List<String> polarQuestions) {
         StringBuilder fxmlBuilder = new StringBuilder();
         fxmlBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
         fxmlBuilder.append("<?import javafx.scene.control.*?>\n");
         fxmlBuilder.append("<?import javafx.scene.layout.*?>\n");
-        fxmlBuilder.append("<VBox xmlns=\"http://javafx.com/javafx/8\" xmlns:fx=\"http://javafx.com/fxml/1\" spacing=\"10\">\n");
+        fxmlBuilder.append("<VBox prefHeight=\"400.0\" prefWidth=\"600.0\" xmlns=\"http://javafx.com/javafx/8.0.0\" xmlns:fx=\"http://javafx.com/fxml/1\" spacing=\"10\" ");
+        fxmlBuilder.append("fx:controller=\"com.example.assignmentdraft2.Userinteraction\">\n"); // Replace with your actual controller class path
 
-        for (String question : tQuestions) {
-            fxmlBuilder.append("    <VBox spacing=\"5\">\n");
-            fxmlBuilder.append("        <Label text=\"").append(question).append("\" />\n");
-            fxmlBuilder.append("        <TextField fx:id=\"").append(generateFXID(question)).append("\" />\n");
-            fxmlBuilder.append("    </VBox>\n");
-        }
-
+        // Generate MCQ Questions
         for (MCQQuestion mcq : mcqQuestions) {
             fxmlBuilder.append("    <VBox spacing=\"5\">\n");
-            fxmlBuilder.append("        <Label text=\"").append(mcq.getQuestion()).append("\" />\n");
+            fxmlBuilder.append("        <Label text= \'  ").append(mcq.getQuestion()).append(" \' />\n ");
             for (String option : mcq.getOptions()) {
-                fxmlBuilder.append("        <RadioButton text=\"").append(option).append("\" />\n");
+                fxmlBuilder.append("            <RadioButton text=\'").append(option).append("\' toggleGroup=\"$mcqToggleGroup\" />\n");
             }
+
             fxmlBuilder.append("    </VBox>\n");
         }
 
+        // Generate Polar Questions
         for (String question : polarQuestions) {
             fxmlBuilder.append("    <VBox spacing=\"5\">\n");
             fxmlBuilder.append("        <Label text=\"").append(question).append("\" />\n");
             fxmlBuilder.append("        <HBox spacing=\"10\">\n");
-            fxmlBuilder.append("            <RadioButton text=\"Yes\" />\n");
-            fxmlBuilder.append("            <RadioButton text=\"No\" />\n");
+
+            fxmlBuilder.append("                <RadioButton text=\"Yes\" toggleGroup=\"$polarToggleGroup\" />\n");
+            fxmlBuilder.append("                <RadioButton text=\"No\" toggleGroup=\"$polarToggleGroup\" />\n");
+
             fxmlBuilder.append("        </HBox>\n");
             fxmlBuilder.append("    </VBox>\n");
         }
 
+        // Generate Text Questions
+        Set<String> fxIds = new HashSet<>();
+        for (String question : tQuestions) {
+            fxmlBuilder.append("    <VBox spacing=\"5\">\n");
+            fxmlBuilder.append("        <Label text=\"").append(question).append("\" />\n");
+            String fxId = generateFXID(question, fxIds);
+            fxmlBuilder.append("        <TextField fx:id=\"").append("textq").append("\" />\n");
+            fxmlBuilder.append("    </VBox>\n");
+        }
+        fxmlBuilder.append("<VBox spacing=\"5\">\n" +
+                "        <Button text=\"Submit\" onAction=\"#handleSubmitButtonAction\" />\n" +
+                "    </VBox>");
+
         fxmlBuilder.append("</VBox>\n");
         return fxmlBuilder.toString();
+
     }
 
-    private String generateFXID(String question) {
-        return "tf_" + question.replaceAll("[^a-zA-Z0-9]", "");
+    private String generateFXID(String question, Set<String> existingIds) {
+        String fxIdBase = "tf_" + question.replaceAll("[^a-zA-Z0-9]", "");
+        String fxId = fxIdBase;
+        int counter = 1;
+        while (existingIds.contains(fxId)) {
+            fxId = fxIdBase + counter;
+            counter++;
+        }
+        existingIds.add(fxId);
+        return fxId;
     }
 
     private void writeFXMLFile(String content, File file) {
         try (FileWriter writer = new FileWriter(file)) {
             writer.write(content);
+            loadStage(file.getAbsolutePath());
             System.out.println("FXML file written to: " + file.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error writing FXML file.");
         }
     }
-
 
     private static class MCQQuestion {
         private final String question;
@@ -640,6 +718,8 @@ public class HelloController {
             return options;
         }
     }
+
+
     @FXML
     public void loadStage(String sceneName) throws IOException {
         try {

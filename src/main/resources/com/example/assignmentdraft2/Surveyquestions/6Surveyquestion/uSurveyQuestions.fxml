@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.0" xmlns:fx="http://javafx.com/fxml/1" spacing="10" fx:controller="com.example.assignmentdraft2.Userinteraction">
+    <VBox spacing="5">
+        <Label text= '  "What is your name?" ' />
+             <RadioButton text='"abc"' toggleGroup="$mcqToggleGroup" />
+            <RadioButton text='"dasd"' toggleGroup="$mcqToggleGroup" />
+            <RadioButton text='"asdf"' toggleGroup="$mcqToggleGroup" />
+            <RadioButton text='"asdf"' toggleGroup="$mcqToggleGroup" />
+    </VBox>
+    <VBox spacing="5">
+        <Label text="why are you gay" />
+        <HBox spacing="10">
+                <RadioButton text="Yes" toggleGroup="$polarToggleGroup" />
+                <RadioButton text="No" toggleGroup="$polarToggleGroup" />
+        </HBox>
+    </VBox>
+    <VBox spacing="5">
+        <Label text="Your're a piece of shit" />
+        <TextField fx:id="textq" />
+    </VBox>
+<VBox spacing="5">
+        <Button text="Submit" onAction="#handleSubmitButtonAction" />
+    </VBox></VBox>
